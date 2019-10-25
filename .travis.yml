@@ -17,6 +17,7 @@ install:
   # Linux
   - SBCL_LINUX="http://prdownloads.sourceforge.net/sbcl/sbcl-1.5.7-x86-64-linux-binary.tar.bz2"
   - if [ "$TRAVIS_OS_NAME" = "linux" ]  ; then wget $SBCL_LINUX; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]  ; then tar -xf sbcl-1.5.7-x86-64-linux-binary.tar.bz2; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]  ; then cd sbcl-1.5.7-x86-64-linux; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]  ; then sudo ./install.sh; fi
 script:
