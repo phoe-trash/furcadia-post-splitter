@@ -15,8 +15,8 @@ install:
   # macOS
   - if [ "$TRAVIS_OS_NAME" = "osx" ]    ; then HOMEBREW_NO_AUTO_UPDATE=1 brew install sbcl; fi
   # Linux
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]  ; then sudo apt install sbcl; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]  ; then sudo apt update; sudo apt install sbcl; fi
   # TODO: build new SBCL
 script:
   # Install
-  - sbcl --eval "(progn (print (list :hello-world (lisp-implementation-type) (lisp-implementation-version))) (sb-ext:exit))"
+  - sbcl --eval "(progn (print (list :hello-world (lisp-implementation-type) (lisp-implementation-version))) (finish-output) (sb-ext:exit))"
