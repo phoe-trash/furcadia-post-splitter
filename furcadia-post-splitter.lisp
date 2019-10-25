@@ -5,7 +5,8 @@
         #:qtools
         #:split-sequence
         #:trivial-package-local-nicknames
-        #:named-readtables))
+        #:named-readtables)
+  (:export #:main))
 
 (in-package #:furcadia-post-splitter)
 
@@ -69,11 +70,7 @@
       (q+:move-position cursor (q+:qtextcursor.end))
       (q+:set-text-cursor text-edit cursor))
     (when (> (length text) *limit*)
-      (q+:insert-plain-text text-edit " [end]"))))
-
-(defun main ()
-  (with-main-window (window 'main-window)
-    (q+:set-style-sheet qt:*qapplication* *stylesheet*)))
+      (q+:insert-plain-text text-edit " [e]"))))
 
 (defparameter *stylesheet*
   "QTextEdit {
@@ -92,16 +89,8 @@ QTextEdit:selected {
   color: #32414B;
 }")
 
-#|
-QFile f(":qdarkstyle/style.qss");
-if (!f.exists())
-{
-printf("Unable to set stylesheet, file not found\n");
-}
-else
-{
-f.open(QFile::ReadOnly | QFile::Text);
-QTextStream ts(&f);
-qApp->setStyleSheet(ts.readAll());
-}
-|#
+(defun main ()
+  (dolist (i '("smokebase.dll" "smokeqtcore.dll" "smokeqtgui.dll"))
+    (cffi:load-foreign-library i))
+  (with-main-window (window 'main-window)
+    (q+:set-style-sheet qt:*qapplication* *stylesheet*)))
