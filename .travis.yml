@@ -23,7 +23,7 @@ script:
   - wget https://beta.quicklisp.org/quicklisp.lisp
   - sbcl 
     --eval "(load \"quicklisp.lisp\")" 
-    --eval "(setf ql-util:*do-not-prompt* t)"
     --eval "(quicklisp-quickstart:install)"
+    --eval "(setf ql-util:*do-not-prompt* t)"
     --eval "(ql:add-to-init-file)"
     --eval "(sb-ext:exit)"
