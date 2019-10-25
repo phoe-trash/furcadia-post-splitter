@@ -27,12 +27,12 @@ install:
   - unset SBCL_HOME
   - INSTALL_ROOT=~/sbcl ./install.sh
   - export SBCL_HOME="$HOME/sbcl/lib/sbcl"
-  - export PATH="`pwd`/sbcl/bin:${PATH}"
+  - export PATH="$HOME/sbcl/bin:${PATH}"
   # TODO: build new SBCL
 script:
   # Install
   - wget https://beta.quicklisp.org/quicklisp.lisp
-  - sbcl --disable-debugger
+  - sbcl --disable-debugger --lose-on-corruption
     --eval "(assert (string= (lisp-implementation-version) \"1.5.7\"))"
     --eval "(load \"quicklisp.lisp\")" 
     --eval "(quicklisp-quickstart:install)"
