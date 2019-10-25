@@ -20,5 +20,5 @@ install:
   # TODO: build new SBCL
 script:
   # Install
-  - sbcl --eval "(print (list :hello-world (lisp-implementation-type) (lisp-implementation-version)))"
-    --eval "(finish-output)" --eval "(sb-ext:exit)"
+  - wget https://beta.quicklisp.org/quicklisp.lisp
+  - sbcl --eval "(load \"quicklisp.lisp\")" --eval "(sb-ext:exit)"
