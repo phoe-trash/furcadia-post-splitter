@@ -44,5 +44,6 @@ install:
     --eval "(ql:update-all-dists)"
     --eval "(sb-ext:exit)"
 script:
+  - mv build/phoe-trash/furcadia-post-splitter ~/quicklisp/local-projects
   - sbcl --disable-debugger
     --eval "(ql:quickload :furcadia-post-splitter)"
