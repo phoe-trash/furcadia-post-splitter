@@ -35,13 +35,14 @@ install:
   - INSTALL_ROOT=~/sbcl ./install.sh
   - export SBCL_HOME="$HOME/sbcl/lib/sbcl"
   - export PATH="$HOME/sbcl/bin:${PATH}"
-script:
-  # Install Quicklisp
+    # Install Quicklisp
   - wget https://beta.quicklisp.org/quicklisp.lisp
   - sbcl --disable-debugger
-    --eval "(assert (string= (lisp-implementation-version) \"$SBCL_VERSION\"))"
     --eval "(load \"quicklisp.lisp\")" 
     --eval "(quicklisp-quickstart:install)"
     --eval "(ql-util:without-prompting (ql:add-to-init-file))"
     --eval "(ql:update-all-dists)"
     --eval "(sb-ext:exit)"
+script:
+  - sbcl --disable-debugger
+    --eval "(ql:quickload :furcadia-post-splitter)"
