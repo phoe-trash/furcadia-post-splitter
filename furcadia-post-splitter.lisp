@@ -90,7 +90,5 @@ QTextEdit:selected {
 }")
 
 (defun main ()
-  (dolist (i '("smokebase.dll" "smokeqtcore.dll" "smokeqtgui.dll"))
-    (cffi:load-foreign-library i))
   (with-main-window (window 'main-window)
     (q+:set-style-sheet qt:*qapplication* *stylesheet*)))
