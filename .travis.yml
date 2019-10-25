@@ -10,7 +10,7 @@ install:
   - cd ~
   # Windows - bootstrap from the public 1.4.14 binary
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then 
-    SBCL_WINDOWS="http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi"
+    SBCL_WINDOWS="http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi";
     wget $SBCL_WINDOWS -O sbcl.msi; 
     choco install lessmsi make;
     lessmsi x sbcl.msi $(cygpath -w "`pwd`/sbcl_ex/");
