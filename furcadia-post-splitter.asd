@@ -15,6 +15,6 @@
                :qt-libs)
   :defsystem-depends-on (:qtools)
   :build-operation "qt-program-op"
-  :build-pathname "raptor-splitter.exe"
+  :build-pathname "raptor-splitter"
   :entry-point "furcadia-post-splitter:main"
   :components ((:file "furcadia-post-splitter")))
