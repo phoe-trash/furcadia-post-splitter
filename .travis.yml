@@ -1,0 +1,24 @@
+os: 
+  - windows
+  - linux
+  - osx
+language: c
+install:
+  # Windows
+  - SBCL_WINDOWS = "http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi"
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then wget $SBCL_WINDOWS -O sbcl.msi; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then msiexec /a sbcl.msi targetdir="`pwd`/sbcl_ex/" /qn; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then mv "sbcl_ex/PFiles/Steel Bank Common Lisp/1.4.14" sbcl; fi
+  # TODO: build new SBCL
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then export SBCL_HOME="`pwd`/sbcl"; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then export PATH="`pwd`/sbcl:${PATH}"; fi
+  # macOS
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]    ; then HOMEBREW_NO_AUTO_UPDATE=1 brew install sbcl; fi
+  # Linux
+  - SBCL_LINUX="http://prdownloads.sourceforge.net/sbcl/sbcl-1.5.7-x86-64-linux-binary.tar.bz2"
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]  ; then wget $SBCL_LINUX; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]  ; then cd sbcl-1.5.7-x86-64-linux; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]  ; then sudo ./install.sh; fi
+script:
+  # Install
+  - sbcl --eval "(print (list :hello-world (lisp-implementation-type) (lisp-implementation-version)))"
