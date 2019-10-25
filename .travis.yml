@@ -49,4 +49,6 @@ install:
 script:
   - sbcl --disable-debugger
     --eval "(ql:quickload :qtools)"
+  - sbcl --disable-debugger
+    --eval "(ql:quickload :qtools)"
     --eval "(ql:quickload :furcadia-post-splitter)"
