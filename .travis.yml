@@ -9,8 +9,8 @@ install:
   - SOURCE_DIR=$(pwd)
   - cd ~
   # Windows - bootstrap from the public 1.4.14 binary
-  - SBCL_WINDOWS="http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi"
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then 
+    SBCL_WINDOWS="http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi"
     wget $SBCL_WINDOWS -O sbcl.msi; 
     choco install lessmsi make;
     lessmsi x sbcl.msi $(cygpath -w "`pwd`/sbcl_ex/");
@@ -24,7 +24,8 @@ install:
     fi
   # Linux - use apt
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
-    sudo apt update; sudo apt install sbcl; 
+    sudo apt update; 
+    sudo apt install sbcl; 
     fi
   # Build new SBCL from source
   - SBCL_SOURCE="http://downloads.sourceforge.net/project/sbcl/sbcl/$SBCL_VERSION/sbcl-$SBCL_VERSION-source.tar.bz2"
