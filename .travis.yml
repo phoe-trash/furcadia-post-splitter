@@ -24,8 +24,9 @@ install:
   - tar -xf sbcl.tar.bz2
   - cd sbcl-1.5.7
   - sh make.sh
+  - unset SBCL_HOME
   - INSTALL_ROOT=~/sbcl ./install.sh
-  - export SBCL_HOME="~/sbcl/lib/sbcl"
+  - export SBCL_HOME="$HOME/sbcl/lib/sbcl"
   - export PATH="`pwd`/sbcl/bin:${PATH}"
   # TODO: build new SBCL
 script:
