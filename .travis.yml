@@ -7,18 +7,23 @@ install:
   - cd ~
   # Windows
   - SBCL_WINDOWS="http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi"
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then wget $SBCL_WINDOWS -O sbcl.msi; fi
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then choco install lessmsi make; fi
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then lessmsi x sbcl.msi $(cygpath -w "`pwd`/sbcl_ex/"); fi
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then mv "sbcl_ex/SourceDir/PFiles/Steel Bank Common Lisp/1.4.14" sbcl_bin; fi
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then export SBCL_HOME="`pwd`/sbcl_bin"; fi
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then export PATH="`pwd`/sbcl_bin:${PATH}"; fi
-  # TODO: build new SBCL
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then 
+    wget $SBCL_WINDOWS -O sbcl.msi; 
+    choco install lessmsi make;
+    lessmsi x sbcl.msi $(cygpath -w "`pwd`/sbcl_ex/");
+    mv "sbcl_ex/SourceDir/PFiles/Steel Bank Common Lisp/1.4.14" sbcl_bin;
+    export SBCL_HOME="`pwd`/sbcl_bin";
+    export PATH="`pwd`/sbcl_bin:${PATH}";
+    fi
   # macOS
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]    ; then HOMEBREW_NO_AUTO_UPDATE=1 brew install sbcl; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
+    HOMEBREW_NO_AUTO_UPDATE=1 brew install sbcl;
+    fi
   # Linux
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]  ; then sudo apt update; sudo apt install sbcl; fi
-  # Build new SBCL
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
+    sudo apt update; sudo apt install sbcl; 
+    fi
+  # Build new SBCL from source
   - SBCL_SOURCE="http://downloads.sourceforge.net/project/sbcl/sbcl/1.5.7/sbcl-1.5.7-source.tar.bz2"
   - wget $SBCL_SOURCE -O sbcl.tar.bz2
   - tar -xf sbcl.tar.bz2
@@ -28,7 +33,6 @@ install:
   - INSTALL_ROOT=~/sbcl ./install.sh
   - export SBCL_HOME="$HOME/sbcl/lib/sbcl"
   - export PATH="$HOME/sbcl/bin:${PATH}"
-  # TODO: build new SBCL
 script:
   # Install
   - wget https://beta.quicklisp.org/quicklisp.lisp
@@ -37,4 +41,5 @@ script:
     --eval "(load \"quicklisp.lisp\")" 
     --eval "(quicklisp-quickstart:install)"
     --eval "(ql-util:without-prompting (ql:add-to-init-file))"
+    --eval "(ql:update-all-dists)"
     --eval "(sb-ext:exit)"
