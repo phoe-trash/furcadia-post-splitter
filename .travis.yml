@@ -47,4 +47,5 @@ install:
   - mv $SOURCE_DIR ~/quicklisp/local-projects
 script:
   - sbcl --disable-debugger
+    --eval "(ql:quickload :qtools)"
     --eval "(ql:quickload :furcadia-post-splitter)"
