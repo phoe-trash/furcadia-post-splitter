@@ -7,7 +7,8 @@ install:
   # Windows
   - SBCL_WINDOWS="http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi"
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then wget $SBCL_WINDOWS -O sbcl.msi; fi
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then msiexec /a sbcl.msi targetdir="`pwd`/sbcl_ex/" /qn; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then msiexec /a sbcl.msi targetdir="`pwd`/sbcl_ex/" /qn /lv sbcl_bin.log; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then cat sbcl_bin.log; fi
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then mv "sbcl_ex/PFiles/Steel Bank Common Lisp/1.4.14" sbcl; fi
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then export SBCL_HOME="`pwd`/sbcl_bin"; fi
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then export PATH="`pwd`/sbcl_bin:${PATH}"; fi
@@ -19,4 +20,5 @@ install:
   # TODO: build new SBCL
 script:
   # Install
-  - sbcl --eval "(progn (print (list :hello-world (lisp-implementation-type) (lisp-implementation-version))) (finish-output) (sb-ext:exit))"
+  - sbcl --eval "(print (list :hello-world (lisp-implementation-type) (lisp-implementation-version)))"
+    --eval "(finish-output)" --eval "(sb-ext:exit)"
