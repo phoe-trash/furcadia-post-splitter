@@ -5,12 +5,15 @@ os:
 language: c
 env:
   - SBCL_VERSION="1.5.7"
+cache:
+  directories:
+  - $HOME/sbcl
 install:
   # - set -e
   - SOURCE_DIR=$(pwd)
   - cd ~
   # Windows - bootstrap from the public 1.4.14 binary
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then 
+  - if [ "$TRAVIS_OS_NAME" = "windows" -a ! -d "$HOME/sbcl" ]; then 
     SBCL_WINDOWS="http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi";
     wget $SBCL_WINDOWS -O sbcl.msi; 
     choco install lessmsi make;
@@ -20,22 +23,25 @@ install:
     export PATH="`pwd`/sbcl_bin:${PATH}";
     fi
   # macOS - use homebrew
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
+  - if [ "$TRAVIS_OS_NAME" = "osx" -a ! -d "$HOME/sbcl" ]; then 
     HOMEBREW_NO_AUTO_UPDATE=1 brew install sbcl;
     fi
   # Linux - use apt
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
+  - if [ "$TRAVIS_OS_NAME" = "linux" -a ! -d "$HOME/sbcl" ]; then 
     sudo apt update; 
     sudo apt install sbcl; 
     fi
   # Build new SBCL from source
-  - SBCL_SOURCE="http://downloads.sourceforge.net/project/sbcl/sbcl/$SBCL_VERSION/sbcl-$SBCL_VERSION-source.tar.bz2"
-  - wget $SBCL_SOURCE -O sbcl.tar.bz2
-  - tar -xf sbcl.tar.bz2
-  - cd "sbcl-$SBCL_VERSION"
-  - sh make.sh
-  - unset SBCL_HOME
-  - INSTALL_ROOT=~/sbcl ./install.sh
+  - if [ ! -d "$HOME/sbcl" ]; then 
+    SBCL_SOURCE="http://downloads.sourceforge.net/project/sbcl/sbcl/$SBCL_VERSION/sbcl-$SBCL_VERSION-source.tar.bz2";
+    wget $SBCL_SOURCE -O sbcl.tar.bz2;
+    tar -xf sbcl.tar.bz2;
+    cd "sbcl-$SBCL_VERSION";
+    sh make.sh;
+    unset SBCL_HOME;
+    INSTALL_ROOT=~/sbcl ./install.sh;
+    fi
+  # Set paths
   - export SBCL_HOME="$HOME/sbcl/lib/sbcl"
   - export PATH="$HOME/sbcl/bin:${PATH}"
     # Install Quicklisp
