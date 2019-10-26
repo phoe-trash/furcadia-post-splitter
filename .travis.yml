@@ -90,8 +90,8 @@ script:
 - mv ~/quicklisp/local-projects/furcadia-post-splitter/bin ~/bin
 before_deploy:
 - mv ~/bin ~/quicklisp/local-projects/furcadia-post-splitter/bin 
-- cd ~/quicklisp/local-projects/furcadia-post-splitter/bin 
-- zip -r "binaries-$TRAVIS_OS_NAME.zip" ~/bin
+- cd ~/quicklisp/local-projects/furcadia-post-splitter
+- zip -r "binaries-$TRAVIS_OS_NAME.zip" bin
 - mkdir release
 - mv "binaries-$TRAVIS_OS_NAME.zip" release/
 - git tag -f "nightly-${TRAVIS_COMMIT}"
