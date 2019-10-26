@@ -87,8 +87,7 @@ script:
   --eval "(asdf:make :furcadia-post-splitter)"
 - mv ~/quicklisp/local-projects/furcadia-post-splitter/bin ~/binaries
 before_deploy:
-- git tag -f ${TRAVIS_BRANCH}-latest
-- zip -r "latest-$TRAVIS_OS_NAME.zip" binaries
+- zip -r "latest-$TRAVIS_OS_NAME.zip" ~/binaries
 deploy:
   provider: releases
   api_key:
