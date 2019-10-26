@@ -1,7 +1,7 @@
 os:
 - linux
-#- windows
-#- osx
+- windows
+- osx
 language: c
 env:
 - SBCL_VERSION="1.5.7"
@@ -94,7 +94,7 @@ before_deploy:
 - zip -r "binaries-$TRAVIS_OS_NAME.zip" bin
 - mkdir release
 - mv "binaries-$TRAVIS_OS_NAME.zip" release/
-- git tag -f "nightly-${TRAVIS_COMMIT}"
+- git tag -f "nightly-$(git rev-parse --short HEAD)"
 deploy:
   provider: releases
   api_key:
