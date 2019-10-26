@@ -5,15 +5,16 @@ os:
 language: c
 env:
   - SBCL_VERSION="1.5.7"
-#cache:
-#  directories:
-#  - $HOME/sbcl
+cache:
+  directories:
+  - $HOME/sbcl
+  - $HOME/quicklisp
 install:
   # - set -e
   - SOURCE_DIR=$(pwd)
   - cd ~
   # Windows - bootstrap from the public 1.4.14 binary
-  - if [ "$TRAVIS_OS_NAME" = "windows" -a ! -d "$HOME/sbcl" ]; then 
+  - if [ "$TRAVIS_OS_NAME" = "windows" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
     SBCL_WINDOWS="http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi";
     wget $SBCL_WINDOWS -O sbcl.msi; 
     choco install lessmsi make;
@@ -23,16 +24,16 @@ install:
     export PATH="`pwd`/sbcl_bin:${PATH}";
     fi
   # macOS - use homebrew
-  - if [ "$TRAVIS_OS_NAME" = "osx" -a ! -d "$HOME/sbcl" ]; then 
+  - if [ "$TRAVIS_OS_NAME" = "osx" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
     HOMEBREW_NO_AUTO_UPDATE=1 brew install sbcl;
     fi
   # Linux - use apt
-  - if [ "$TRAVIS_OS_NAME" = "linux" -a ! -d "$HOME/sbcl" ]; then 
+  - if [ "$TRAVIS_OS_NAME" = "linux" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
     sudo apt update; 
     sudo apt install sbcl; 
     fi
   # Build new SBCL from source
-  - if [ ! -d "$HOME/sbcl" ]; then 
+  - if [ ! -f "$HOME/sbcl/bin/sbcl" ]; then 
     SBCL_SOURCE="http://downloads.sourceforge.net/project/sbcl/sbcl/$SBCL_VERSION/sbcl-$SBCL_VERSION-source.tar.bz2";
     wget $SBCL_SOURCE -O sbcl.tar.bz2;
     tar -xf sbcl.tar.bz2;
@@ -45,15 +46,23 @@ install:
   - export SBCL_HOME="$HOME/sbcl/lib/sbcl"
   - export PATH="$HOME/sbcl/bin:${PATH}"
     # Install Quicklisp
-  - wget https://beta.quicklisp.org/quicklisp.lisp
-  - sbcl --disable-debugger
+  - if [ ! -f "$HOME/quicklisp/setup.lisp" ]; then 
+    wget https://beta.quicklisp.org/quicklisp.lisp;
+    sbcl --disable-debugger
     --eval "(load \"quicklisp.lisp\")" 
     --eval "(quicklisp-quickstart:install)"
     --eval "(ql-util:without-prompting (ql:add-to-init-file))"
     --eval "(ql:update-all-dists)"
-    --eval "(sb-ext:exit)"
+    --eval "(sb-ext:exit)";
+    else 
+    rm -rf ~/quicklisp/local-projects;
+    mkdir ~/quicklisp/local-projects;
+    fi
   - mv $SOURCE_DIR ~/quicklisp/local-projects
 script:
+  - sbcl --disable-debugger
+    --eval "(ql:update-all-dists)"
+    --eval "(sb-ext:exit)"
   - sbcl --disable-debugger
     --eval "(ql:quickload :qtools)"
     --eval "(sb-ext:exit)"
