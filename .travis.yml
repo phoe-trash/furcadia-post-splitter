@@ -41,6 +41,7 @@ install:
     sh make.sh;
     unset SBCL_HOME;
     INSTALL_ROOT=~/sbcl ./install.sh;
+    cd ~;
     fi
   # Set paths
   - export SBCL_HOME="$HOME/sbcl/lib/sbcl"
@@ -54,7 +55,11 @@ install:
     --eval "(ql-util:without-prompting (ql:add-to-init-file))"
     --eval "(ql:update-all-dists)"
     --eval "(sb-ext:exit)";
-    else 
+    else
+    sbcl --disable-debugger
+    --eval "(load \"quicklisp/setup.lisp\")" 
+    --eval "(ql-util:without-prompting (ql:add-to-init-file))"
+    --eval "(sb-ext:exit)";
     rm -rf ~/quicklisp/local-projects;
     mkdir ~/quicklisp/local-projects;
     fi
