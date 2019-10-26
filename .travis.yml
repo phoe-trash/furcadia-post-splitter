@@ -48,7 +48,7 @@ install:
   # Set paths
   - export SBCL_HOME="$HOME/sbcl/lib/sbcl"
   - export PATH="$HOME/sbcl/bin:${PATH}"
-    # Install Quicklisp
+  # Install Quicklisp
   - if [ ! -f "$HOME/quicklisp/setup.lisp" ]; then 
     wget https://beta.quicklisp.org/quicklisp.lisp;
     sbcl --disable-debugger
@@ -65,6 +65,14 @@ install:
     rm -rf ~/quicklisp/local-projects;
     mkdir ~/quicklisp/local-projects;
     fi
+  # Work around macOS qt-libs path issue
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
+    git clone https://github.com/Shinmera/qt-libs ~/quicklisp/local-projects/qt-libs;
+    cd ~/quicklisp/local-projects/qt-libs;
+    git checkout 2cba210;
+    cd ~;
+    fi
+  # Copy the library into local-projects
   - mv $SOURCE_DIR ~/quicklisp/local-projects
 script:
   - sbcl --disable-debugger
