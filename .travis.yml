@@ -10,6 +10,7 @@ cache:
   - $HOME/sbcl
   - $HOME/quicklisp
   - $HOME/.cache/common-lisp
+  - $HOME/AppData/Local/cache/common-lisp
 install:
   - SOURCE_DIR=$(pwd)
   - rm -rf .git
