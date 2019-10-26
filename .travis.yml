@@ -78,3 +78,4 @@ script:
     --eval "(sb-ext:exit)"
   - sbcl --disable-debugger
     --eval "(asdf:make :furcadia-post-splitter)"
+  - mv ~/quicklisp/local-projects/furcadia-post-splitter/bin ~/binaries
