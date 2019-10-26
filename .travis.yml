@@ -110,7 +110,7 @@ before_deploy:
   fi
 # Workaround: on Windows, we must add the .exe extension
 - if [ "$TRAVIS_OS_NAME" = "windows" ]; then
-  mv bin/raptor-splitter bin/raptor-splitter.exe
+  mv bin/raptor-splitter bin/raptor-splitter.exe;
   fi
 # Zip the release
 - mkdir release
