@@ -90,11 +90,12 @@ QTextEdit:selected {
 }")
 
 (defun main ()
-  #+(or darwin win32)
+  ;; Workaround: Qtools fails the QT::INIT assertion.
   (dolist (lib '("smokebase" "smokeqtcore" "smokeqtgui"))
     (cffi:load-foreign-library (format nil 
                                        #+win32 "~A.dll"
                                        #+darwin "qtlibs!~A.dylib"
+                                       #+linux "qtlibs!~A.so"
                                        lib)))
   (with-main-window (window 'main-window)
     (q+:set-style-sheet qt:*qapplication* *stylesheet*)))
