@@ -9,9 +9,10 @@ cache:
   directories:
   - $HOME/sbcl
   - $HOME/quicklisp
+  - $HOME/.cache/common-lisp
 install:
-  # - set -e
   - SOURCE_DIR=$(pwd)
+  - rm -rf .git
   - cd ~
   # Windows - bootstrap from the public 1.4.14 binary
   - if [ "$TRAVIS_OS_NAME" = "windows" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
