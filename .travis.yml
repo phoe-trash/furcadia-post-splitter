@@ -67,7 +67,7 @@ install:
     fi
   # Work around macOS qt-libs path issue
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
-    cd ~/quicklisp/local-projects/qt-libs;
+    cd ~/quicklisp/local-projects;
     wget https://github.com/Shinmera/qt-libs/archive/1b20ca0624023a1642ac94a991d4b39843e62403.zip;
     unzip 1b20ca0624023a1642ac94a991d4b39843e62403.zip;
     rm 1b20ca0624023a1642ac94a991d4b39843e62403.zip;
