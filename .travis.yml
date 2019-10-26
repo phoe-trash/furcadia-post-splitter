@@ -87,12 +87,14 @@ script:
   --eval "(asdf:make :furcadia-post-splitter)"
 - mv ~/quicklisp/local-projects/furcadia-post-splitter/bin ~/binaries
 before_deploy:
-- zip -r "latest-$TRAVIS_OS_NAME.zip" ~/binaries
+- cd ~
+- zip -r "binaries-$TRAVIS_OS_NAME.zip" ~/binaries
 deploy:
   provider: releases
   api_key:
     secure: hOB4ySsqe6Z5//kKtReEiNPweU0duWoFg6kjKyGv1uoGOdkcd7WqVWv0I4FEB9F7Kd+hP9+RYnnYiDje9aTUK67Nh/DabeGfGlHGG3BYAn3cr8GqOvfwiRYpEo6qGnu4AhnCoTO75K1318UdANill+KA5Mk1RCQyk+V4CbSUVG5xOskxJxghOzoGe16+RhInxqV4z02nRvFiqlqKYjh0Xt48rNJd3nvhgCNT3kke78Aip+Q66lKHcd74y3wifTvxJmCQrTBJazxRW14hc0OUWa9at2tRVso9urfPy2OZlJE9qxh2ms6lRbYz5H/6yyRyQc+AQ7iOguEh3OpdfnFiYNu0WTSGilgqU/0iQcyVEM5L1xkUW0pFGx2xEDVbgY3ibh3DPmtaHkDSQEIs5/pXNC9JV4vomFhP09iPnOHsky16dyfCscwZ081Fl+uEtDFG6o+vjYWb9V0aWuS9evGXA/fZoG0JKHy+GCGg4XPhBWX02TKk0NW9CE51RfcZn1z0LGpG7PX3W41SoaGHlr4FAJS2iuvCgIsLZbY9HaNEyWwGS5J/L9852JY+Ysa3dGeaOa5u+ta9mWzS0OEX4+tQG5AOnkOvPt4xBnZlF/q/IQRAb6gVQQSHY0kEBM73rW2FlC8lkoh/lCHxq/CHIgcTxlSF3P/nYlOBGzGq+UKAZKw=
-  file: latest-*.zip
+  file_glob: true
+  file: ~/binaries-*.zip
   on:
     repo: phoe-trash/furcadia-post-splitter
   skip_cleanup: true
