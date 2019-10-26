@@ -96,15 +96,21 @@ script:
   --eval "(asdf:make :furcadia-post-splitter)"
 - mv ~/quicklisp/local-projects/furcadia-post-splitter/bin ~/bin
 before_deploy:
+# Windows: prerequisites
 - if [ "$TRAVIS_OS_NAME" = "windows" ]; then 
   choco install zip;
   fi
-- mv ~/bin ~/quicklisp/local-projects/furcadia-post-splitter/bin; sleep 5
-- cd ~/quicklisp/local-projects/furcadia-post-splitter; sleep 5
-- zip -r "binaries-$TRAVIS_OS_NAME.zip" bin; sleep 5
-- mkdir release; sleep 5
-- mv "binaries-$TRAVIS_OS_NAME.zip" release/; sleep 5
-- git tag -f latest; sleep 5
+# Move the binaries into the proper place
+- mv ~/bin ~/quicklisp/local-projects/furcadia-post-splitter/bin
+- cd ~/quicklisp/local-projects/furcadia-post-splitter
+# Workaround: qtools/deploy do not attach all required libraries
+- if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+  cp ~/quicklisp/local-projects/qt-libs/standalone/qtlibs!z.dylib bin;
+  fi
+# Zip the release
+- mkdir release
+- zip -r "release/binaries-$TRAVIS_OS_NAME.zip" bin;
+- git tag -f latest
 deploy:
   provider: releases
   api_key:
