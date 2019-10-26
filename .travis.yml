@@ -1,96 +1,100 @@
-os: 
-  - windows
-  - linux
-  - osx
+os:
+- windows
+- linux
+- osx
 language: c
 env:
-  - SBCL_VERSION="1.5.7"
+- SBCL_VERSION="1.5.7"
 cache:
   directories:
-  - $HOME/sbcl
-  - $HOME/quicklisp
-  - $HOME/.cache/common-lisp
-  - $HOME/AppData/Local/cache/common-lisp
+  - "$HOME/sbcl"
+  - "$HOME/quicklisp"
+  - "$HOME/.cache/common-lisp"
+  - "$HOME/AppData/Local/cache/common-lisp"
 install:
-  - SOURCE_DIR=$(pwd)
-  - rm -rf .git
-  - cd ~
-  # Windows - bootstrap from the public 1.4.14 binary
-  - if [ "$TRAVIS_OS_NAME" = "windows" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
-    SBCL_WINDOWS="http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi";
-    wget $SBCL_WINDOWS -O sbcl.msi; 
-    choco install lessmsi make;
-    lessmsi x sbcl.msi $(cygpath -w "`pwd`/sbcl_ex/");
-    mv "sbcl_ex/SourceDir/PFiles/Steel Bank Common Lisp/1.4.14" sbcl_bin;
-    export SBCL_HOME="`pwd`/sbcl_bin";
-    export PATH="`pwd`/sbcl_bin:${PATH}";
-    fi
-  # macOS - use homebrew
-  - if [ "$TRAVIS_OS_NAME" = "osx" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
-    HOMEBREW_NO_AUTO_UPDATE=1 brew install sbcl;
-    fi
-  # Linux - use apt
-  - if [ "$TRAVIS_OS_NAME" = "linux" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
-    sudo apt update; 
-    sudo apt install sbcl; 
-    fi
-  # Build new SBCL from source
-  - if [ ! -f "$HOME/sbcl/bin/sbcl" ]; then 
-    SBCL_SOURCE="http://downloads.sourceforge.net/project/sbcl/sbcl/$SBCL_VERSION/sbcl-$SBCL_VERSION-source.tar.bz2";
-    wget $SBCL_SOURCE -O sbcl.tar.bz2;
-    tar -xf sbcl.tar.bz2;
-    cd "sbcl-$SBCL_VERSION";
-    sh make.sh;
-    unset SBCL_HOME;
-    INSTALL_ROOT=~/sbcl ./install.sh;
-    cd ~;
-    fi
-  # Set paths
-  - export SBCL_HOME="$HOME/sbcl/lib/sbcl"
-  - export PATH="$HOME/sbcl/bin:${PATH}"
-  # Install Quicklisp
-  - if [ ! -f "$HOME/quicklisp/setup.lisp" ]; then 
-    wget https://beta.quicklisp.org/quicklisp.lisp;
-    sbcl --disable-debugger
-    --eval "(load \"quicklisp.lisp\")" 
-    --eval "(quicklisp-quickstart:install)"
-    --eval "(ql-util:without-prompting (ql:add-to-init-file))"
-    --eval "(ql:update-all-dists)"
-    --eval "(sb-ext:exit)";
-    else
-    sbcl --disable-debugger
-    --eval "(load \"quicklisp/setup.lisp\")" 
-    --eval "(ql-util:without-prompting (ql:add-to-init-file))"
-    --eval "(sb-ext:exit)";
-    rm -rf ~/quicklisp/local-projects;
-    mkdir ~/quicklisp/local-projects;
-    fi
-  # Work around macOS qt-libs path issue
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
-    cd ~/quicklisp/local-projects;
-    wget https://github.com/Shinmera/qt-libs/archive/1b20ca0624023a1642ac94a991d4b39843e62403.zip;
-    unzip 1b20ca0624023a1642ac94a991d4b39843e62403.zip;
-    rm 1b20ca0624023a1642ac94a991d4b39843e62403.zip;
-    mv qt-libs-1b20ca0624023a1642ac94a991d4b39843e62403 qt-libs;
-    wget https://github.com/Shinmera/qtools/archive/b997b61e648f1056e35e06aa2d1af6d1b328ad0c.zip;
-    unzip b997b61e648f1056e35e06aa2d1af6d1b328ad0c.zip;
-    rm b997b61e648f1056e35e06aa2d1af6d1b328ad0c.zip;
-    mv qtools-b997b61e648f1056e35e06aa2d1af6d1b328ad0c qtools;
-    cd ~;
-    fi
-  # Copy the library into local-projects
-  - mv $SOURCE_DIR ~/quicklisp/local-projects
+- SOURCE_DIR=$(pwd)
+- rm -rf .git
+- cd ~
+- if [ "$TRAVIS_OS_NAME" = "windows" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
+  SBCL_WINDOWS="http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi";
+  wget $SBCL_WINDOWS -O sbcl.msi; 
+  choco install lessmsi make;
+  lessmsi x sbcl.msi $(cygpath -w "`pwd`/sbcl_ex/"); 
+  mv "sbcl_ex/SourceDir/PFiles/Steel Bank Common Lisp/1.4.14" sbcl_bin;
+  export SBCL_HOME="`pwd`/sbcl_bin"; 
+  export PATH="`pwd`/sbcl_bin:${PATH}";
+  fi
+- if [ "$TRAVIS_OS_NAME" = "osx" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
+  HOMEBREW_NO_AUTO_UPDATE=1 brew install sbcl;
+  fi
+- if [ "$TRAVIS_OS_NAME" = "linux" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
+  sudo apt update;
+  sudo apt install sbcl;
+  fi
+- if [ ! -f "$HOME/sbcl/bin/sbcl" ]; then 
+  SBCL_SOURCE="http://downloads.sourceforge.net/project/sbcl/sbcl/$SBCL_VERSION/sbcl-$SBCL_VERSION-source.tar.bz2";
+  wget $SBCL_SOURCE -O sbcl.tar.bz2;
+  tar -xf sbcl.tar.bz2;
+  cd "sbcl-$SBCL_VERSION";
+  sh make.sh;
+  unset SBCL_HOME;
+  INSTALL_ROOT=~/sbcl ./install.sh;
+  cd ~;
+  fi
+- export SBCL_HOME="$HOME/sbcl/lib/sbcl"
+- export PATH="$HOME/sbcl/bin:${PATH}"
+- if [ ! -f "$HOME/quicklisp/setup.lisp" ]; then
+  wget https://beta.quicklisp.org/quicklisp.lisp;
+  sbcl --disable-debugger 
+  --eval "(load \"quicklisp.lisp\")"
+  --eval "(quicklisp-quickstart:install)"
+  --eval "(ql-util:without-prompting (ql:add-to-init-file))"
+  --eval "(ql:update-all-dists)"
+  --eval "(sb-ext:exit)";
+  else
+  sbcl --disable-debugger
+  --eval "(load \"quicklisp/setup.lisp\")"
+  --eval "(ql-util:without-prompting (ql:add-to-init-file))"
+  --eval "(sb-ext:exit)";
+  rm -rf ~/quicklisp/local-projects;
+  mkdir ~/quicklisp/local-projects;
+  fi
+- if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+  cd ~/quicklisp/local-projects;
+  wget https://github.com/Shinmera/qt-libs/archive/1b20ca0624023a1642ac94a991d4b39843e62403.zip;
+  unzip 1b20ca0624023a1642ac94a991d4b39843e62403.zip;
+  rm 1b20ca0624023a1642ac94a991d4b39843e62403.zip;
+  mv qt-libs-1b20ca0624023a1642ac94a991d4b39843e62403 qt-libs;
+  wget https://github.com/Shinmera/qtools/archive/b997b61e648f1056e35e06aa2d1af6d1b328ad0c.zip;
+  unzip b997b61e648f1056e35e06aa2d1af6d1b328ad0c.zip;
+  rm b997b61e648f1056e35e06aa2d1af6d1b328ad0c.zip;
+  mv qtools-b997b61e648f1056e35e06aa2d1af6d1b328ad0c qtools;
+  cd ~;
+  fi
+- mv $SOURCE_DIR ~/quicklisp/local-projects
 script:
-  - sbcl --disable-debugger
-    --eval "(ql:update-all-dists)"
-    --eval "(sb-ext:exit)"
-  - sbcl --disable-debugger
-    --eval "(ql:quickload :qtools)"
-    --eval "(sb-ext:exit)"
-  - sbcl --disable-debugger
-    --eval "(ql:quickload :qtools)"
-    --eval "(ql:quickload :furcadia-post-splitter)"
-    --eval "(sb-ext:exit)"
-  - sbcl --disable-debugger
-    --eval "(asdf:make :furcadia-post-splitter)"
-  - mv ~/quicklisp/local-projects/furcadia-post-splitter/bin ~/binaries
+- sbcl --disable-debugger
+  --eval "(ql:update-all-dists)"
+  --eval "(sb-ext:exit)"
+- sbcl --disable-debugger
+  --eval "(ql:quickload :qtools)"
+  --eval "(sb-ext:exit)"
+- sbcl --disable-debugger
+  --eval "(ql:quickload :qtools)"
+  --eval "(ql:quickload :furcadia-post-splitter)"
+  --eval "(sb-ext:exit)"
+- sbcl --disable-debugger
+  --eval "(asdf:make :furcadia-post-splitter)"
+- mv ~/quicklisp/local-projects/furcadia-post-splitter/bin ~/binaries
+before_deploy:
+- git tag -f ${TRAVIS_BRANCH}-latest
+- zip -r "latest-$TRAVIS_OS_NAME.zip" binaries
+deploy:
+  provider: releases
+  api_key:
+    secure: bBa/Cr+4D+g7hjPUluKSbPmMNiXUUitH0wEcAlGxtFnAjxoavhirA8sqYegHs6zgEs0Y9mnoqrzFBxsrQQMYXF5xq+3k/kkpc+VfRxmOCw1dk3HugWnbwpdu0pikNgrt4Bi8dUBcTvYsgwOvo6lihoMV7uVqhzX3KsIwcmCjAg/AF3VRZ7Wp/ZRKxdF/8c95lCUnurjT8oxBj/ea/6yR3d1oiO00S/xb3U+NxPpCbyQpUoZYbaBQWLlfrvu0jCbWF3gUr06v604UrwhBjA51t+xtaY6e6jq0n/E8Svy0OdZnzFHU7I6lNcSTKc1oTH0IJ56IXPnZRLes3Ip4EKwePpOf2W5qn4biT0lYf7BArYC3caBD1RwT3xr+Ju2vaPONorcP+rOAOoKkYxFU589hYudxhbJ/x1ZMMhqULS8vN+ehfNAzDUOulkeaszKu3mBmgsqA7o2ZqBnjShO7d1kthzawJdwyG2aQxXu1m0X7HyyKSYsjre8QNwSfhzKyqU3tCuLNeD+XIsuPbKExC8d1+15EJ+zyoc7PC2UhaysMiXvtgoK+GywzAohkb2CjoEAgGmDNcnJxGtnPEtlH08k3D5Fkbmn00olhEeAiG7wGdbRK5bHKU9KQXpXnKjc4o3TPsIZNA10GHqUlcxHJ29XdET3tG962nT+1PB2smdyY8vc=
+  file: latest-*.zip
+  on:
+    repo: phoe-trash/furcadia-post-splitter
+  skip_cleanup: true
+  overwrite: true
