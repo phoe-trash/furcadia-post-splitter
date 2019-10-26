@@ -70,10 +70,10 @@ install:
 # macOS - work around qt-libs 2.0.2 bug
 - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
   cd ~/quicklisp/local-projects;
-  git clone https://github.com/Shinmera/qt-libs
-  cd qt-libs
-  git checkout 1b20ca062402
-  git cherry-pick 6e70e7f01a
+  git clone https://github.com/Shinmera/qt-libs;
+  cd qt-libs;
+  git checkout 1b20ca062402;
+  git cherry-pick 6e70e7f01a;
   cd ~;
   fi
 - mv $SOURCE_DIR ~/quicklisp/local-projects
