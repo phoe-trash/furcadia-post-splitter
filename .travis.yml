@@ -16,7 +16,6 @@ cache:
   - "$HOME/AppData/Local/cache/common-lisp"
 install:
 - SOURCE_DIR=$(pwd)
-- rm -rf .git
 - cd ~
 - if [ "$TRAVIS_OS_NAME" = "windows" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
   SBCL_WINDOWS="http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.14-x86-64-windows-binary.msi";
@@ -88,12 +87,14 @@ script:
   --eval "(sb-ext:exit)"
 - sbcl --disable-debugger
   --eval "(asdf:make :furcadia-post-splitter)"
-- mv ~/quicklisp/local-projects/furcadia-post-splitter/bin ~/binaries
+- mv ~/quicklisp/local-projects/furcadia-post-splitter/bin ~/bin
 before_deploy:
-- cd ~
-- zip -r "binaries-$TRAVIS_OS_NAME.zip" ~/binaries
+- mv ~/bin ~/quicklisp/local-projects/furcadia-post-splitter/bin 
+- cd ~/quicklisp/local-projects/furcadia-post-splitter/bin 
+- zip -r "binaries-$TRAVIS_OS_NAME.zip" ~/bin
 - mkdir release
 - mv "binaries-$TRAVIS_OS_NAME.zip" release/
+- git tag -f "nightly-${TRAVIS_COMMIT}"
 deploy:
   provider: releases
   api_key:
