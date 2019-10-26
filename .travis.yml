@@ -104,7 +104,8 @@ before_deploy:
 - zip -r "binaries-$TRAVIS_OS_NAME.zip" bin
 - mkdir release
 - mv "binaries-$TRAVIS_OS_NAME.zip" release/
-- git tag -f "nightly-$(git rev-parse --short HEAD)"
+#- git tag -f "nightly-$(git rev-parse --short HEAD)"
+- git tag -f nightly
 deploy:
   provider: releases
   api_key:
