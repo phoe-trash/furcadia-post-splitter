@@ -5,9 +5,9 @@ os:
 language: c
 env:
   - SBCL_VERSION="1.5.7"
-cache:
-  directories:
-  - $HOME/sbcl
+#cache:
+#  directories:
+#  - $HOME/sbcl
 install:
   # - set -e
   - SOURCE_DIR=$(pwd)
