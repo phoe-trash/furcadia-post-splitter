@@ -110,7 +110,8 @@ before_deploy:
   fi
 # Zip the release
 - mkdir release
-- zip -r "release/binaries-$TRAVIS_OS_NAME.zip" bin;
+- zip -r "release/binaries-$TRAVIS_OS_NAME.zip" bin/;
+- export TRAVIS_TAG="nightly-$TRAVIS_COMMIT"
 deploy:
   provider: releases
   api_key:
