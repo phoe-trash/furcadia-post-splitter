@@ -111,7 +111,6 @@ before_deploy:
 # Zip the release
 - mkdir release
 - zip -r "release/binaries-$TRAVIS_OS_NAME.zip" bin;
-- git tag -f latest
 deploy:
   provider: releases
   api_key:
