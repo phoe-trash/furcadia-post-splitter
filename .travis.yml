@@ -26,6 +26,7 @@ install:
   mv "sbcl_ex/SourceDir/PFiles/Steel Bank Common Lisp/1.4.14" sbcl_bin;
   export SBCL_HOME="`pwd`/sbcl_bin"; 
   export PATH="`pwd`/sbcl_bin:${PATH}";
+  ls -alh $SBCL_HOME;
   fi
 # macOS - use homebrew
 - if [ "$TRAVIS_OS_NAME" = "osx" -a ! -f "$HOME/sbcl/bin/sbcl" ]; then 
