@@ -94,7 +94,7 @@ script:
 before_deploy:
 # Windows: prerequisites
 - if [ "$TRAVIS_OS_NAME" = "windows" ]; then 
-  choco install zip;
+  choco install zip gzip;
   fi
 # Move the binaries into the proper place
 - mv ~/bin ~/quicklisp/local-projects/furcadia-post-splitter/bin
