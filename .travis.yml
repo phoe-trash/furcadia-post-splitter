@@ -82,6 +82,7 @@ install:
   ZLIB1_SOURCE="http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-zlib-1.2.11-7-any.pkg.tar.xz";
   wget "$ZLIB1_SOURCE" -O zlib.tar.xz;
   7z x zlib.tar.xz;
+  7z x zlib.tar;
   ls -alh;
   cp mingw64/bin/zlib1.dll ~;
   fi
